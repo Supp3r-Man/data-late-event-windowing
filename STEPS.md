@@ -31,4 +31,4 @@ Problems and choices along the way:
 3. `python -m latewin demo` prints the tables (about 3 seconds); `--seeds 2 --n 500` is faster.
 4. Read the failure case at the bottom of the demo output first: it is the whole idea in five lines.
 5. To experiment: change the delay or lateness in `latewin/report.py`, or call `run_stream(events, tumbling(20), delay, lateness)` yourself and inspect `.out` (messages), `.side` (dropped events) and `.first` (first emission and latency).
-6. To push later: create the GitHub repo, then `git remote add origin ...` and `git push -u origin main`. CI has not run yet.
+6. To push later: create the GitHub repo, then `git remote add origin ...` and `git push -u origin main`. CI passed on Python 3.11 and 3.13 on both accounts.

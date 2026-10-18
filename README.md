@@ -4,7 +4,7 @@
 
 Event-time **tumbling, sliding and session windows** over a stream with late and out-of-order events, in pure stdlib Python: a **watermark** (max event time seen minus an allowed delay), **allowed lateness** with window **updates and retractions**, a **side output** for events past the allowed lateness, and **idempotent emission** (deduplicated by window id plus version). Every streaming result is compared with a **batch recompute over the full data**, and the watermark-delay versus completeness versus latency trade-off is measured.
 
-> **What is verified, and what is not.** 42 tests pass locally on Python 3.13 (stdlib only; pytest for the tests). CI has not run yet, so no CI claim is made. I broke 10 key behaviours on purpose (watermark sign, lateness boundary, fire condition, sink dedup, retraction, session overlap, side output, batch session split, sliding assignment, retract versioning) and the tests failed for each. **All data is synthetic and fictional** (3 made-up sensors, integer ticks), generated from seeds. The numbers below show how this implementation behaves on that generator, **not** how a real pipeline or engine behaves: there is no real traffic, no multiple partitions, no clock skew, no throughput or state-size measurement, and no comparison with Flink or Beam.
+> **What is verified, and what is not.** 42 tests pass locally on Python 3.13 (stdlib only; pytest for the tests). The GitHub Actions workflow (Linux, Python 3.11 and 3.13) ran green after the first push. I broke 10 key behaviours on purpose (watermark sign, lateness boundary, fire condition, sink dedup, retraction, session overlap, side output, batch session split, sliding assignment, retract versioning) and the tests failed for each. **All data is synthetic and fictional** (3 made-up sensors, integer ticks), generated from seeds. The numbers below show how this implementation behaves on that generator, **not** how a real pipeline or engine behaves: there is no real traffic, no multiple partitions, no clock skew, no throughput or state-size measurement, and no comparison with Flink or Beam.
 
 ## Measured results
 
@@ -60,4 +60,4 @@ python -m latewin demo --seeds 2 --n 500
 - A session can still extend an already-fired session with lateness 0, because the lateness check uses the merged window end; this is a modelling choice.
 - Windows still open at end of stream are flushed; their latency is clamped at 0, which flatters latency a little.
 - Sliding-window `dropped` counts an event once even if only one of its windows rejected it.
-- No CI run yet; no real engine comparison.
+- No real engine comparison.
